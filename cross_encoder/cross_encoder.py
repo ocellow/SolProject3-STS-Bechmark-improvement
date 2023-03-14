@@ -8,7 +8,7 @@ import torch
 from torch import nn
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
-from tqdm.autonotebook import tqdm, trange
+from tqdm.autonotebook import tqdm
 
 from sentence_transformers import SentenceTransformer
 
@@ -85,6 +85,8 @@ class CrossEncoder():
           save_best_model:bool=True,
           max_grad_norm:float=1,
           show_progress_bar:bool=True):
+    
+    train_data_loader.collate_fn = self.batch_collate
     
     self.model.to(self.device)
     if output_path is not None:
