@@ -25,9 +25,12 @@ class CrossEncoder():
     self.tokenizer = AutoTokenizer.from_pretrained(model_name, **tokenizer_args)
     self.max_length = max_length
 
-    self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
     self.default_activiation_function = nn.Sigmoid() if self.config.num_labels ==1 else nn.Identity()
-  
+    
+    self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    
+
+
   def batch_collate(self, batch):
     texts = [[] for _ in range(len(batch[0].texts))]
     labels = []
@@ -40,6 +43,8 @@ class CrossEncoder():
 
     tokenized = self.tokenizer(*texts, padding=True, truncation='longest_first',
                                return_tensors='pt', max_length=self.max_length)
+    labels = torch.tensor(labels, dtype=torch.float if self.config.num_labels == 1 else torch.long).to(self.device)
+
     for name in tokenized:
       tokenized[name] = tokenized[name].to(self.device)
 
@@ -56,7 +61,7 @@ class CrossEncoder():
                                  return_tensors='pt', max_length=self.max_length)
 
       for name in tokenized:
-        tokenized[name] = tokenized[name].to(self._target_device)
+        tokenized[name] = tokenized[name].to(self.device)
 
         return tokenized
 
@@ -86,7 +91,7 @@ class CrossEncoder():
           max_grad_norm:float=1,
           show_progress_bar:bool=True):
     
-    train_data_loader.collate_fn = self.batch_collate
+    train_dataloader.collate_fn = self.batch_collate
     
     self.model.to(self.device)
     if output_path is not None:
