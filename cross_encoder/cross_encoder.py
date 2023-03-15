@@ -57,7 +57,7 @@ class CrossEncoder():
       for idx, text in enumerate(example):
         texts[idx].append(text.strip())
       
-      tokenized = self.tokenizer(*text, padding=True, truncation='longest_first',
+      tokenized = self.tokenizer(*texts, padding=True, truncation='longest_first',
                                  return_tensors='pt', max_length=self.max_length)
 
       for name in tokenized:
