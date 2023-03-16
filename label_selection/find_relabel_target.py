@@ -34,7 +34,7 @@ class FindRelabelTarget():
 
         self.og_train = pd.read_csv(train_path)  # train_path = og_train_path 
         # self.og_train = self.og_train.reset_index() 
-        # self.og_train = self.og_train[['sentence1','sentence2','labels.label']]
+        self.og_train = self.og_train[['sentence1','sentence2','labels.label']]
         self.dev = pd.read_csv(dev_path) # dev_path = KLUE devset_path
         self.num_folds = num_folds
         
