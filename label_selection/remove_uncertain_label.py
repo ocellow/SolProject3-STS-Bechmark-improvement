@@ -13,12 +13,8 @@ from sentence_transformers.cross_encoder.evaluation import CECorrelationEvaluato
 from sentence_transformers.readers import InputExample
 from sentence_transformers import CrossEncoder
 
-
-
 from tqdm.auto import tqdm
 
-import seaborn as sns
-import matplotlib.pyplot as plt
 
 from importlib import reload
 reload(logging)
