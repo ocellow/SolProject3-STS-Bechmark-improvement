@@ -82,20 +82,16 @@ class FindRelabelTarget():
         
         # select val by label dist 
         val_ratio = (dev.groupby('labels.label').size() / dev.groupby('labels.label').size().sum()).to_frame('ratio')
-        val_ratio['number'] = round(val_ratio['ratio'] * (len(train_data) *0.1)).astype(int) # train데이터의 10%를 val로 사용 
+        val_ratio['number'] = round(val_ratio['ratio'] * (len(train_data) *0.05)).astype(int) # train데이터의 10%를 val로 사용 
         
         val_data = pd.DataFrame()
         label = list(set(train_data['labels.label'].values))
         
-        try: 
-            for i in label:
-                sample = train_data.loc[train_data['labels.label']==i].sample(n=val_ratio['number'][i], random_state = 0)
-                val_data = pd.concat([val_data,sample])
-        except: # Error sample size is larger 
-            logging.info('not enough data.. do "replace=True"')
-            for i in label:
-                sample = train_data.loc[train_data['labels.label']==i].sample(n=val_ratio['number'][i], random_state = 0, replace=True)
-                val_data = pd.concat([val_data,sample])
+        
+        for i in label:
+            sample = train_data.loc[train_data['labels.label']==i].sample(n=val_ratio['number'][i], random_state = 0)
+            val_data = pd.concat([val_data,sample])
+        
         
         train_data = train_data.drop(val_data.index)
         return train_data, val_data
