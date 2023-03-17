@@ -259,7 +259,7 @@ class FindRelabelTarget():
             pred_per_label = [preds_each_model[i] for preds_each_model in preds_all_model]
             std_per_label.append(np.std(pred_per_label)) # standard deviation of each data
 
-        threshold = np.median(std_per_label) #*2 # use meidan*2 as a threshold ##########################
+        threshold = np.median(std_per_label)*2 # use meidan*2 as a threshold 
         logging.info(f'threshold:{threshold}')
 
         uncertain_dp_idx = [test.index[i] for i, std in enumerate(std_per_label) if std > threshold] 
