@@ -100,7 +100,7 @@ class FindRelabelTarget():
         train_data = train_data.drop(val_data.index)
         return train_data, val_data
     
-    # train, val , test 한번에 input_examples로 변환 
+    # train, val 한번에 input_examples로 변환 
     def create_input_examples(self,train,val):
 
         dfs = [train, val]
@@ -126,9 +126,10 @@ class FindRelabelTarget():
 
         logging.info('assign_DataLoader_and_val_evaluator')
         train_dataloader = DataLoader(sts_train_examples,
-                                shuffle=True,
-                                batch_size = self.train_batch_size)
+                                      shuffle=True,
+                                      batch_size = self.train_batch_size)
         val_evaluator = CECorrelationEvaluator.from_input_examples(sts_val_examples)
+        
         warmup_steps = math.ceil(len(train_dataloader) * self.num_epochs / self.train_batch_size*0.1) # 10%of train
 
         logging.info(f'start train model..')
@@ -167,7 +168,7 @@ class FindRelabelTarget():
         
         for i in range(self.num_folds):
 
-            # cuda memory error 방지  
+            # prevent from cuda memory error  
             gc.collect()
             torch.cuda.empty_cache()
             
@@ -210,7 +211,7 @@ class FindRelabelTarget():
 
         return false_idx
 
-    # use different model / seed to extract uncertain datapoint 
+    # use standard deviation of labels from different model / seed to extract uncertain datapoint 
     def extract_uncertain(self, false_idx, num_seeds=None, model_list=None):
 
         test = self.og_train.iloc[false_idx]
@@ -274,8 +275,8 @@ if __name__ == '__main__':
     num_epochs = 1
     train_batch_size = 64
     model_save_path = '/content/sample_data/cross_encoder'
-    train_path = '/content/sample_data/t_exp.csv'
-    dev_path = '/content/drive/MyDrive/STS/KLUE_STS_train.csv'
+    train_path = 'https://raw.githubusercontent.com/tommyEzreal/SolProject3-STS-Bechmark-improvement/main/data/KLUE_STS_train%20(2).csv'
+    dev_path = 'https://raw.githubusercontent.com/tommyEzreal/SolProject3-STS-Bechmark-improvement/main/data/KLUE_STS_val%20(2).csv'
 
 
     find_re_target = FindRelabelTarget(num_epochs,
