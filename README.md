@@ -60,7 +60,7 @@
 
 ```python
 ! git clone https://github.com/tommyEzreal/SolProject3-STS-Bechmark-improvement
-%cd /SolProject3-STS-Bechmark-improvement/label_selection/
+%cd SolProject3-STS-Bechmark-improvement/label_selection/
 %run find_relabel_target.py
 ```
 
