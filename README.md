@@ -58,6 +58,12 @@
 
 #### 재라벨 대상 데이터 선정 
 
+```python
+! git clone https://github.com/tommyEzreal/SolProject3-STS-Bechmark-improvement
+%cd /SolProject3-STS-Bechmark-improvement/label_selection/
+%run find_relabel_target.py
+```
+
 <img width="1195" alt="image" src="https://user-images.githubusercontent.com/100064247/209095264-b3efbdbb-ae7f-4e59-aaeb-2ac699de377d.png">
 <br/>
 
