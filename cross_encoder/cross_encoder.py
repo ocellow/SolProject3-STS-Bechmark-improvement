@@ -20,17 +20,17 @@ class CrossEncoder():
                 max_length:int = None,
                 tokenizer_args:Dict={},
                 automodel_args:Dict={}):
-        self.config = AutoConfig.from_pretrained(model_name) # load huggingface model
+        self.config = AutoConfig.from_pretrained(model_name) # load config from pretrained model 
 
 
-        self.config.num_labels = num_labels
+        self.config.num_labels = num_labels # set num_label as 1 for STS regression task 
 
-
+        # load huggingface model, tokenizer 
         self.model = AutoModelForSequenceClassification.from_pretrained(model_name, config=self.config, **automodel_args)
         self.tokenizer = AutoTokenizer.from_pretrained(model_name, **tokenizer_args)
-        self.max_length = max_length
+        self.max_length = max_length # if None, max length of self.model 
 
-        self.default_activation_function = nn.Sigmoid() 
+        self.default_activation_function = nn.Sigmoid()  # used on-top of model.predict()
 
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
     
@@ -40,15 +40,16 @@ class CrossEncoder():
 
         for example in batch:
             for idx, text in enumerate(example.texts):
-                texts[idx].append(text.strip())
+                texts[idx].append(text.strip()) # 시작과 끝 공백 있을경우 제거
 
             labels.append(example.label)
 
         tokenized = self.tokenizer(*texts, padding=True, truncation='longest_first', return_tensors="pt", max_length=self.max_length)
-        labels = torch.tensor(labels, dtype=torch.float).to(self.device)
-
-        for name in tokenized:
-            tokenized[name] = tokenized[name].to(self.device)
+        labels = torch.tensor(labels, dtype=torch.float).to(self.device) # label to device
+        
+        # tokenized = {'input_ids':[[]] , 'token_type_ids':[[]], 'attention_mask':[[]]}
+        for name in tokenized: 
+            tokenized[name] = tokenized[name].to(self.device)  # token to device
 
         return tokenized, labels
 
@@ -67,73 +68,78 @@ class CrossEncoder():
         return tokenized
 
 
-    def _eval_during_training(self, evaluator, output_path, save_best_model, epoch, steps):
-        if evaluator is not None:
-            score = evaluator(self, output_path=output_path, epoch=epoch, steps=steps)
-            if score > self.best_score:
-                self.best_score = score
-                if save_best_model:
-                    self.save(output_path)
+    def _eval_during_training(self, evaluator, output_path, save_best_model):
+        #if evaluator is not None:
+        score, _ = evaluator(self, output_path=output_path)
+        if score > self.best_score:
+            self.best_score = score
+            if save_best_model:
+                self.save(output_path)
 
  
     def fit(self,
-            train_dataloader: DataLoader,
+            train_dataloader,
             evaluator,
             epochs:int = 1,
-            loss_fct=None,
             activation_fct = nn.Identity(),
-            scheduler:str = 'WarmupLinear',
             warmup_steps:int=10000,
-            optimizer_class:Type[Optimizer] = torch.optim.AdamW,
+            optimizer_class = torch.optim.AdamW,
             optimizer_params:Dict[str,object] = {'lr':2e-5},
             weight_decay:float = 0.01,
             evaluation_steps=0,
             output_path:str=None,
             save_best_model:bool=True,
-            max_grad_norm:float=1,
-            show_progress_bar:bool=True):
+            max_grad_norm:float=1):
+            
 
         train_dataloader.collate_fn = self.batch_collate
 
         if output_path is not None:
-            os.makedirs(output_path, exist_ok=True)
+            os.makedirs(output_path, exist_ok=True) # make directory 
         
         self.model.to(self.device)
 
-        self.best_score = -9999999
+        self.best_score = -9999999 # for eval_during_training (score > best_score)
         num_train_steps = int(len(train_dataloader)*epochs)
 
+        # get params from pretrained model 
         param_optimizer = list(self.model.named_parameters())
 
         no_decay = ['bias', 'LayerNorm.bias', 'LayerNorm.weight']
         optimizer_grouped_parameters = [
-            {'params':[p for n,p in param_optimizer if not any(nd in n for nd in no_decay)],
+            {'params':[p for n,p in param_optimizer if not any(nd in n for nd in no_decay)], # if True (not in no_decay list)
                 'weight_decay':weight_decay},
-            {'params':[p for n,p in param_optimizer if any(nd in n for nd in no_decay)],
-                'weight_decay':0.0}
-        ]
+            {'params':[p for n,p in param_optimizer if any(nd in n for nd in no_decay)], # if False (in no_decay)
+                'weight_decay':0.0} ]
+        # n : name of bias, weights from all layers in ptmodel
+        # p : w&b of each name 
+        
+
 
         optimizer = optimizer_class(optimizer_grouped_parameters, **optimizer_params)
-
-        if isinstance(scheduler, str):
-            scheduler = SentenceTransformer._get_scheduler(optimizer, scheduler=scheduler,
+        
+        
+        scheduler = SentenceTransformer._get_scheduler(optimizer, scheduler='WarmupLinear',
                                                             warmup_steps = warmup_steps, t_total=num_train_steps)
-        if loss_fct is None:
-            loss_fct = nn.BCEWithLogitsLoss()
+        
+        loss_fct = torch.nn.MSELoss() #loss_fct = torch.nn.BCEWithLogitsLoss()#2
+        
 
-        skip_scheduler=False
+        #skip_scheduler=False
 
         #train loop
         for epoch in tqdm(range(epochs)):
             training_steps = 0
+            step_loss = 0
             self.model.zero_grad()
             self.model.train() 
 
+            # features = input_ids, tkn_ids, attn_mask 
             for features, labels in tqdm(train_dataloader, desc="Iteration", smoothing=0.05):
                 model_predictions = self.model(**features, return_dict=True)
                 logits = activation_fct(model_predictions.logits)
                 
-                logits=logits.view(-1)
+                logits=logits.view(-1) # 
             
                 loss = loss_fct(logits, labels)
                 loss.backward()
@@ -142,22 +148,27 @@ class CrossEncoder():
 
                 optimizer.zero_grad()
 
-                if not skip_scheduler:
-                    scheduler.step()
+                #if not skip_scheduler:
+                scheduler.step()
                 
                 training_steps +=1
 
-                if evaluator is not None and evaluation_steps >0 and training_steps % evaluation_steps==0:
-                    self._eval_during_training(evaluator, output_path, save_best_model, epoch, training_steps)
+                step_loss += loss.item()
+
+                if training_steps % 50 == 0 and training_steps !=0:
+                    print(f"Step : {training_steps},  Avg Loss : { step_loss / training_steps:.4f}")
+
+                if evaluation_steps >0 and training_steps % evaluation_steps==0:
+                    self._eval_during_training(evaluator, output_path, save_best_model)
 
                     self.model.zero_grad()
                     self.model.train()
-            if evaluator is not None:
-                self._eval_during_training(evaluator, output_path, save_best_model, epoch, -1)
+            
+            self._eval_during_training(evaluator, output_path, save_best_model) # last val 
 
-    def predict(self, sentences:List[List[str]],
+    def predict(self, sentences:List[List[str]], # evaluator 만지고 다시보기 
                 batch_size:int = 32,
-                show_progress_bar:bool=True,
+                show_progress_bar:bool = None,
                 num_workers:int=0,
                 convert_to_numpy: bool = True,
                 convert_to_tensor:bool = False):
