@@ -1,3 +1,6 @@
+# evaluation for experiments
+# with label bin 
+
 import numpy as np
 import pandas as pd
 import torch
@@ -7,7 +10,7 @@ from tqdm.auto import tqdm
 
 
 
-def model_evaluation(model_save_path, encoding):
+def evaluate_exp(model_save_path, encoding):
     
     # test data(new_devset.csv) load 
     test_data_path = 'https://raw.githubusercontent.com/tommyEzreal/SolProject3-STS-Bechmark-improvement/main/data/new_devset.csv'
