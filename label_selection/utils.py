@@ -1,3 +1,4 @@
+import pandas as pd
 from konlpy import *
 
 
@@ -12,7 +13,7 @@ def jaccard_distance(sentence_pair):
 
     return jaccard_distance
   
-#리스트를 받으면 top_n index 반환 
+#리스트를 받으면 크기순(오름,내림) index 반환 
 def top_n_idx(lst, n, reverse:bool=True):
 
     indexed_lst = list(enumerate(lst))
@@ -31,7 +32,10 @@ def top_n_idx(lst, n, reverse:bool=True):
     
 # dataframe과 label을 입력하면 top_n을 출력  
 
-def top_n_jacc(data_path, label:float, top_n:int, reverse:str ='True'):# after relabel data 
+# reverse = 'True' : top_n jacc_dist 
+# reverse = 'False' : below_n jacc_dist
+
+def rank_jacc(data_path, label:float, top_n:int, reverse:str ='True'):
     df = pd.read_csv(data_path)
     
     # df = df[df['labels.label'] == label]
