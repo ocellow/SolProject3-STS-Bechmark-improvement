@@ -10,7 +10,7 @@
 test_evaluator = ModelEvaluator.from_input_examples(sts_test_examples)
 pearson_r , f1_score = test_evaluator(trained_model) 
 ```
-
+### output example
 <img width="803" alt="image" src="https://user-images.githubusercontent.com/100064247/226134635-549be079-9dba-4d59-ba4c-3639b7aec78d.png">
 
 
