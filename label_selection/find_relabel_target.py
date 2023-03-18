@@ -82,7 +82,7 @@ class FindRelabelTarget():
         
         # select val by label dist 
         val_ratio = (dev.groupby('labels.label').size() / dev.groupby('labels.label').size().sum()).to_frame('ratio')
-        val_ratio['number'] = round(val_ratio['ratio'] * (len(train_data) *0.05)).astype(int) # train데이터의 10%를 val로 사용 
+        val_ratio['number'] = round(val_ratio['ratio'] * (len(train_data) *0.05)).astype(int) # train데이터의 5%를 val로 사용 
         
         val_data = pd.DataFrame()
         label = list(set(train_data['labels.label'].values))
