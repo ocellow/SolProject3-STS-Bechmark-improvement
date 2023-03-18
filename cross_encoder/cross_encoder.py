@@ -13,7 +13,7 @@ from tqdm.auto import tqdm
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, AutoConfig
 from sentence_transformers import SentenceTransformer
 
-from model_evaluation import model_evaluator
+from model_evaluation.model_evaluator import ModelEvaluator
 
 class CrossEncoder():
     def __init__(self, model_name:str, 
