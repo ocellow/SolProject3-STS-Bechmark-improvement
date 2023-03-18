@@ -9,7 +9,7 @@ import torch.backends.cudnn as cudnn
 import random 
 from torch.utils.data import DataLoader
 from sentence_transformers import SentenceTransformer,  LoggingHandler, losses, models, util
-from sentence_transformers.cross_encoder.evaluation import CECorrelationEvaluator
+from model_evaluation.model_evaluator import ModelEvaluator
 import gc
 import math
 import logging 
@@ -124,7 +124,7 @@ class FindRelabelTarget():
         train_dataloader = DataLoader(sts_train_examples,
                                       shuffle=True,
                                       batch_size = self.train_batch_size)
-        val_evaluator = CECorrelationEvaluator.from_input_examples(sts_val_examples)
+        val_evaluator = ModelEvaluator.from_input_examples(sts_val_examples)
         
         warmup_steps = math.ceil(len(train_dataloader) * self.num_epochs / self.train_batch_size*0.1) # 10%of train
 
@@ -137,7 +137,6 @@ class FindRelabelTarget():
             optimizer_params = {'lr':5e-5},
             warmup_steps=warmup_steps,
             output_path=model_save_path,
-            show_progress_bar = True
         )
 
         return cross_encoder
