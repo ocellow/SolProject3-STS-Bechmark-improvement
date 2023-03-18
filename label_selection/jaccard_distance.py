@@ -1,5 +1,5 @@
 from konlpy import *
-mecab = Mecab()
+
 
 # tokenize by morpheme-level 
 def jaccard_distance(sentence_pair):
