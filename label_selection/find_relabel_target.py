@@ -2,14 +2,16 @@ import pandas as pd
 import numpy as np
 from tqdm.auto import tqdm
 from sklearn.model_selection import KFold
-from sentence_transformers.cross_encoder import CrossEncoder
 from sentence_transformers.readers import InputExample
 import torch
 import torch.backends.cudnn as cudnn 
 import random 
 from torch.utils.data import DataLoader
 from sentence_transformers import SentenceTransformer,  LoggingHandler, losses, models, util
+
+from cross_encoder.cross_encoder import CrossEncoder
 from model_evaluation.model_evaluator import ModelEvaluator
+
 import gc
 import math
 import logging 
