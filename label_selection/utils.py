@@ -37,9 +37,7 @@ def top_n_idx(lst, n, reverse:bool=True):
 
 def rank_jacc(data_path, label:float, top_n:int, reverse:str ='True'):
     df = pd.read_csv(data_path)
-    
-    # df = df[df['labels.label'] == label]
-    filtered_df = df[df['new_label'] == label]
+    filtered_df = df[df['labels.label'] == label]
     pairs = list(zip(filtered_df['sentence1'],filtered_df['sentence2']))
 
     # jaccard distance 모든 각 문장 페어에 대해서 구하기
