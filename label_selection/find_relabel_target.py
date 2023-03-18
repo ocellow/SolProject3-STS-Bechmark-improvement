@@ -8,16 +8,16 @@ import torch.backends.cudnn as cudnn
 import random 
 from torch.utils.data import DataLoader
 from sentence_transformers import SentenceTransformer,  LoggingHandler, losses, models, util
+import gc
+import math
+import logging
+from importlib import reload
 
 from cross_encoder.cross_encoder import CrossEncoder
 from model_evaluation.model_evaluator import ModelEvaluator
 
-import gc
-import math
-import logging 
 
 # 학습경과 모니터링하는 logger 초기화
-from importlib import reload
 reload(logging)
 logging.basicConfig(
     format="%(asctime)s - %(message)s",
