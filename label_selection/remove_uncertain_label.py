@@ -36,7 +36,7 @@ def remove_uncertain_label (model_list,sentence_pairs):
         model = CrossEncoder(model_save_path)
         
         print(logging.info("Predict_with_model_{}".format(i)))
-        scores = model.predict(sentence_pairs,show_progress_bar=True)
+        scores = model.predict(sentence_pairs)
         
         globals()['label_{}'.format(i)] = np.round((scores*5).tolist(),1)
         labels.append(globals()['label_{}'.format(i)])
