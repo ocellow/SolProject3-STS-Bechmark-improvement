@@ -3,20 +3,17 @@ import pandas as pd
 import math
 import logging
 from datetime import datetime
-
+from tqdm.auto import tqdm
+from importlib import reload
 import torch
 from torch.utils.data import DataLoader
 from datasets import load_dataset
 from sentence_transformers import SentenceTransformer,  LoggingHandler, losses, models, util
-from sentence_transformers.evaluation import EmbeddingSimilarityEvaluator
-from sentence_transformers.cross_encoder.evaluation import CECorrelationEvaluator, CEBinaryAccuracyEvaluator, CEBinaryClassificationEvaluator
 from sentence_transformers.readers import InputExample
-from sentence_transformers import CrossEncoder
 
-from tqdm.auto import tqdm
+from cross_encoder.cross_encoder import CrossEncoder
 
 
-from importlib import reload
 reload(logging)
 logging.basicConfig(
     format="%(asctime)s - %(message)s",
