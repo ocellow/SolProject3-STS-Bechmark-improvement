@@ -6,6 +6,9 @@
 %run SolProject3-STS-Bechmark-improvement/label_selection/find_relabel_target.py
 ```
 
+## output_example
+
+
 
 ## remove uncertain pseudo label
 - 모델 성능 향상을 위한 self-training방식 적용 시 불확실성이 높은 pseudo-label을 선별 
