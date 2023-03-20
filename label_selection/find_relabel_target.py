@@ -54,7 +54,7 @@ class FindRelabelTarget():
         filtered_df = self.og_train[(self.og_train[label_col] >= label_range[0]) & (self.og_train[label_col] <= label_range[1])]
         return filtered_df
  
-    def get_data_by_fold(self, fold_num): ##데이터 겹쳐서 분할되는 문제 해결 
+    def get_data_by_fold(self, fold_num): ## fold로 나눠서 test 추출  
         # 데이터프레임의 인덱스를 리스트로 변환
         idx = self.filtered_df.index.tolist()
         
