@@ -13,8 +13,8 @@ import math
 import logging
 from importlib import reload
 
+import cross_encoder.train_utils
 from cross_encoder.cross_encoder import CrossEncoder
-from cross_encoder import train_utils
 from model_evaluation.model_evaluator import ModelEvaluator
  
 
