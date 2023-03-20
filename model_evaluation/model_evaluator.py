@@ -18,10 +18,12 @@ logging.basicConfig(
 
 # class input : sentence_pairs[List]
 class ModelEvaluator:
-    def __init__(self, sentence_pairs: List[List[str]], scores: List[float]):
+    def __init__(self, sentence_pairs: List[List[str]], scores: List[float],verbose=True):
         self.sentence_pairs = sentence_pairs
         self.scores = scores
-
+        self.verbose = verbose
+        
+    
     @classmethod
     def from_input_examples(cls, examples: List[InputExample], **kwargs):
         sentence_pairs = []
@@ -34,12 +36,13 @@ class ModelEvaluator:
         return cls(sentence_pairs, scores, **kwargs)
 
     def __call__(self, model, output_path: str = None):
-
-        logging.info("ModelEvaluator: Evaluating the model on STS dataset..")
+        if self.verbose == True:
+            logging.info("ModelEvaluator: Evaluating the model on STS dataset..")
         pred_scores = model.predict(self.sentence_pairs)
         
         eval_pearson, _ = pearsonr(self.scores, pred_scores)
-        logging.info("Correlation:\tPearson: {:.4f}".format(eval_pearson))
+        if self.verbose == True:
+            logging.info("Correlation:\tPearson: {:.4f}".format(eval_pearson))
         
         conf_mat = []
         for score, pred in zip(self.scores, pred_scores):
@@ -59,11 +62,13 @@ class ModelEvaluator:
         TN = conf_mat.count('True_N')
         FP = conf_mat.count('False_P')
         FN = conf_mat.count('False_N')
-        logging.info("True_P: {}\tTrue_N: {}\tFalse_P: {}\tFalse_N: {}".format(TP,TN,FP,FN))
+        if self.verbose == True:
+            logging.info("True_P: {}\tTrue_N: {}\tFalse_P: {}\tFalse_N: {}".format(TP,TN,FP,FN))
         pc = TP / (TP + FP)
         rc = TP / (TP + FN)
 
         f1 = 2 * pc * rc / (pc + rc)
-        logging.info("F1-score:\t {:.4f}".format(f1))
+        if self.verbose == True:
+            logging.info("F1-score:\t {:.4f}".format(f1))
 
         return eval_pearson, f1
