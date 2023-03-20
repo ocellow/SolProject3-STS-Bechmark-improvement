@@ -1,8 +1,9 @@
-# use jaccard distance to make new devset 
-# for below 3.0 score, high diistance
-# above 3.0, low distance pairs are prioritized 
-# prevent from model to predict based on wordoverlap 
-
+```
+use jaccard distance to make new devset 
+for below 3.0 score, high diistance
+above 3.0, low distance pairs are prioritized 
+prevent from model to predict based on wordoverlap 
+```
 
 import pandas as pd
 from konlpy import *
