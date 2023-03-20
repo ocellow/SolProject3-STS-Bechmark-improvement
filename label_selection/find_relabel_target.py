@@ -28,7 +28,7 @@ logging.basicConfig(
     handlers=[LoggingHandler()],
 )
 
-class FindRelabelTarget(): # Trainer 상속하게 만들기 
+class FindRelabelTarget():  
     def __init__(self,
                 model_save_path, 
                 train_path,
