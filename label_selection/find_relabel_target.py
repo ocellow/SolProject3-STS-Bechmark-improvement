@@ -11,6 +11,7 @@ from sentence_transformers import SentenceTransformer,  LoggingHandler, losses, 
 import gc
 import math
 import logging
+import tqdm 
 from tqdm.auto import tqdm
 from importlib import reload
 
