@@ -1,5 +1,5 @@
 ### ModelEvaluator
-- 
+- eval during training / loss, pearson_r, f1_score 
 
 ```python
 ! git clone https://github.com/tommyEzreal/SolProject3-STS-Bechmark-improvement
