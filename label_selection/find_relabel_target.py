@@ -1,7 +1,3 @@
-import sys
-sys.path.append('SolProject3-STS-Bechmark-improvement/cross_encoder')
-import train_utils
-
 import pandas as pd
 import numpy as np
 from tqdm.auto import tqdm
@@ -17,7 +13,7 @@ import math
 import logging
 from importlib import reload
 
-
+from cross_encoder.train_utils import *
 from cross_encoder.cross_encoder import CrossEncoder
 from model_evaluation.model_evaluator import ModelEvaluator
  
