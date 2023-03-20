@@ -169,7 +169,6 @@ class CrossEncoder():
 
     def predict(self, sentences:List[List[str]], # evaluator 만지고 다시보기 
                 batch_size:int = 32,
-                show_progress_bar:bool = None,
                 num_workers:int=0,
                 convert_to_numpy: bool = True,
                 convert_to_tensor:bool = False):
@@ -199,9 +198,7 @@ class CrossEncoder():
         
         pred_scores = [score[0] for score in pred_scores]
 
-        if convert_to_tensor:
-            pred_scores = torch.stack(pred_scores)
-        elif convert_to_numpy:
+        if convert_to_numpy:
             pred_scores = np.asarray([score.cpu().detach().numpy() for score in pred_scores])
 
         if input_was_string:
@@ -212,9 +209,9 @@ class CrossEncoder():
 
 
     def save(self, path):
-        """
-        Saves all model and tokenizer to path
-        """
+      
+        #Saves all model and tokenizer to path
+
         if path is None:
             return
 
@@ -223,7 +220,7 @@ class CrossEncoder():
         self.tokenizer.save_pretrained(path)
 
     def save_pretrained(self, path):
-        """
-        Same function as save
-        """
+        
+        #Same function as save
+        
         return self.save(path)
