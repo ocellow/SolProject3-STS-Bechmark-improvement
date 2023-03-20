@@ -11,6 +11,7 @@ from sentence_transformers import SentenceTransformer,  LoggingHandler, losses, 
 import gc
 import math
 import logging
+from tqdm.auto import tqdm
 from importlib import reload
 
 from cross_encoder.train_utils import *
