@@ -90,7 +90,8 @@ class CrossEncoder():
             evaluation_steps=0,
             output_path:str=None,
             save_best_model:bool=True,
-            max_grad_norm:float=1):
+            max_grad_norm:float=1,
+            verbose = True):
             
 
         train_dataloader.collate_fn = self.batch_collate
@@ -129,6 +130,7 @@ class CrossEncoder():
         #skip_scheduler=False
 
         #train loop
+        
         for epoch in tqdm(range(epochs)):
             training_steps = 0
             step_loss = 0
@@ -157,7 +159,8 @@ class CrossEncoder():
                 step_loss += loss.item()
 
                 if training_steps % 50 == 0 and training_steps !=0:
-                    print(f"Step : {training_steps},  Avg Loss : { step_loss / training_steps:.4f}")
+                    if verbose == True:
+                        print(f"Step : {training_steps},  Avg Loss : { step_loss / training_steps:.4f}")
 
                 if evaluation_steps >0 and training_steps % evaluation_steps==0:
                     self._eval_during_training(evaluator, output_path, save_best_model)
@@ -198,6 +201,8 @@ class CrossEncoder():
         
         pred_scores = [score[0] for score in pred_scores]
 
+        # if convert_to_tensor:
+        #     pred_scores = torch.stack(pred_scores)
         if convert_to_numpy:
             pred_scores = np.asarray([score.cpu().detach().numpy() for score in pred_scores])
 
@@ -209,9 +214,9 @@ class CrossEncoder():
 
 
     def save(self, path):
-      
-        #Saves all model and tokenizer to path
-
+        """
+        Saves all model and tokenizer to path
+        """
         if path is None:
             return
 
@@ -220,7 +225,7 @@ class CrossEncoder():
         self.tokenizer.save_pretrained(path)
 
     def save_pretrained(self, path):
-        
-        #Same function as save
-        
+        """
+        Same function as save
+        """
         return self.save(path)
