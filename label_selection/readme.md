@@ -1,5 +1,13 @@
-# Label Selection (remove uncertain pseudo label) 
+# Label Selection 
 
+## find_relabel_target
+```python
+! git clone https://github.com/tommyEzreal/SolProject3-STS-Bechmark-improvement/
+%run SolProject3-STS-Bechmark-improvement/label_selection/find_relabel_target.py
+```
+
+
+## remove uncertain pseudo label
 - 모델 성능 향상을 위한 self-training방식 적용 시 불확실성이 높은 pseudo-label을 선별 
 - 사용방법
 
