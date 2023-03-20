@@ -4,6 +4,7 @@ from sentence_transformers import InputExample
 from datetime import datetime 
 import logging
 from importlib import reload
+from sentence_transformers import SentenceTransformer, LoggingHandler
 
 from cross_encoder.cross_encoder import CrossEncoder
 from model_evaluation.model_evaluator import ModelEvaluator
