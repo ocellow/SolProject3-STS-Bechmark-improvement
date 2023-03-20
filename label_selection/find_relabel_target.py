@@ -244,7 +244,7 @@ class FindRelabelTarget():
                 # 학습 루프마다 다른 이름으로 저장 
                 model_save_path = self.model_save_path + '-' + f'{pretrained_model_name}' + '-' + f'seed{seed}'
                 
-                            # load pretrained model / train model by each fold 
+                # load pretrained model / train with each random seed  
                 cross_encoder = self.train(pretrained_model_name, model_save_path, train)
             
                 # predict test data / return label 
@@ -260,7 +260,7 @@ class FindRelabelTarget():
             pred_per_label = [preds_each_model[i] for preds_each_model in preds_all_model]
             std_per_label.append(np.std(pred_per_label)) # standard deviation of each data
 
-        threshold = np.median(std_per_label)*2 # use meidan*2 as a threshold 
+        threshold = np.median(std_per_label) # use meidan as a threshold 
         logging.info(f'threshold:{threshold}')
 
         uncertain_dp_idx = [test.index[i] for i, std in enumerate(std_per_label) if std > threshold] 
