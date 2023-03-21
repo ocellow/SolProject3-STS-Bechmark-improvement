@@ -7,7 +7,7 @@
 ```
 
 
-# or  
+- or  
 
 ```python
 %run ../SolProject3-STS-Bechmark-improvement/cross_encoder/CrossEncoder.py
