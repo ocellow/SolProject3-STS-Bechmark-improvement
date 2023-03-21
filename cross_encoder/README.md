@@ -9,6 +9,23 @@
 %run ../SolProject3-STS-Bechmark-improvement/cross_encoder/train_utils.py
 ```
 
+```python
+extract_val_from_train(train,dev) # train에서 devset label분포에 맞게 train,val return 
+
+
+
+create_input_examples(train,val) # train, val 한번에 input_examples로 변환 
+
+
+train_ce(model_save_path,       # train cross_encoder
+         train, # DataFrame
+         dev, # DataFrame
+         num_epochs,
+         train_batch_size,
+         pretrained_model_name
+         verbose = True)
+```
+
 
 - or  
 
