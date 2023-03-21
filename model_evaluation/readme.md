@@ -1,6 +1,8 @@
 ### ModelEvaluator
 - eval during training / loss, pearson_r, f1_score 
-
+```python
+%run model_evaluator.py
+```
 ```python
 # test 
 test_evaluator = ModelEvaluator.from_input_examples(sts_test_examples)
@@ -21,7 +23,9 @@ pearson_r , f1_score = test_evaluator(trained_model)
 - 기존 devset에서 잘못된 라벨들을 수정하고 분포에 맞춰 데이터를 변경하였습니다.
 - 피어슨 상관계수를 비롯해 confusion_matrix, f1score, mse, 구간별 correlation, acc를 한번에 확인할 수 있습니다.
 
-
+```python
+%run evaluate_exp.py
+```
 ```python
 # 학습완료된 model 불러오기 (cross-encoder)
 model_save_path = ' '
