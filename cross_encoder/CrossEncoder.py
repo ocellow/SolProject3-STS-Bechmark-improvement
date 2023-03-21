@@ -30,9 +30,6 @@ class CrossEncoder():
         self.model = AutoModelForSequenceClassification.from_pretrained(model_name, config=self.config, **automodel_args)
         self.tokenizer = AutoTokenizer.from_pretrained(model_name, **tokenizer_args)
         self.max_length = max_length # if None, max length of self.model 
-
-        self.default_activation_function = nn.Sigmoid()  # used on-top of model.predict()
-
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
     
     def batch_collate(self, batch):
@@ -186,7 +183,7 @@ class CrossEncoder():
                                         shuffle=False)
         iterator = tqdm(input_dataloader, desc="Batches")
         
-        activation_fct = self.default_activation_function # nn.Sigmoid() 
+        activation_fct = nn.Sigmoid() 
         """
         transform the model's output logits into probabilty values (0 to 1) by nn.Sigmoid()
         cause sts score range = [0-1] continous values 
