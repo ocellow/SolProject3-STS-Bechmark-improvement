@@ -188,8 +188,8 @@ class CrossEncoder():
         
         activation_fct = self.default_activation_function # nn.Sigmoid() 
         """
-        transform the model's output logits into probabilty (0 to 1) by nn.Sigmoid()
-        sts score range = 0 -1 continous values 
+        transform the model's output logits into probabilty values (0 to 1) by nn.Sigmoid()
+        cause sts score range = [0-1] continous values 
         """
 
         pred_scores = []
