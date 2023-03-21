@@ -82,7 +82,6 @@ class CrossEncoder():
             train_dataloader,
             evaluator,
             epochs:int = 1,
-            activation_fct = nn.Identity(),
             warmup_steps:int=10000,
             optimizer_class = torch.optim.AdamW,
             optimizer_params:Dict[str,object] = {'lr':2e-5},
@@ -140,15 +139,15 @@ class CrossEncoder():
             # features = input_ids, tkn_ids, attn_mask 
             for features, labels in tqdm(train_dataloader, desc="Iteration", smoothing=0.05):
                 model_predictions = self.model(**features, return_dict=True)
-                logits = activation_fct(model_predictions.logits)
-                
-                logits=logits.view(-1) # 
+                logits = model_predictions.logits # get logits from SequenceClassifier output (logits = Tensor([[]]))
+                logits=logits.view(-1)  
             
                 loss = loss_fct(logits, labels)
                 loss.backward()
+                
                 torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_grad_norm)
+                
                 optimizer.step()
-
                 optimizer.zero_grad()
 
                 scheduler.step()
@@ -186,7 +185,12 @@ class CrossEncoder():
                                         num_workers=num_workers,
                                         shuffle=False)
         iterator = tqdm(input_dataloader, desc="Batches")
-        activation_fct = self.default_activation_function
+        
+        activation_fct = self.default_activation_function # nn.Sigmoid() 
+        """
+        transform the model's output logits into probabilty (0 to 1) by nn.Sigmoid()
+        sts score range = 0 -1 continous values 
+        """
 
         pred_scores = []
         self.model.eval()
