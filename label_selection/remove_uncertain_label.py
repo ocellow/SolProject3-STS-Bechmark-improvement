@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 import math
 import logging
 from datetime import datetime
@@ -7,7 +6,6 @@ from tqdm.auto import tqdm
 from importlib import reload
 import torch
 
-from sentence_transformers import SentenceTransformer,  LoggingHandler, losses, models, util
 from cross_encoder.CrossEncoder import CrossEncoder
 
 
