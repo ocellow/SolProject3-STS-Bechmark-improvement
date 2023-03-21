@@ -28,17 +28,16 @@ def jaccard_distance(sentence_pair):
     return jaccard_distance
   
 #리스트를 받으면 크기순(오름,내림) index 반환 
-def top_n_idx(lst, n, reverse:bool=True):
+def top_n_idx(lst, n, reverse=True):
 
     indexed_lst = list(enumerate(lst))
 
     def get_key(pair):
         return pair[1] # 원소기준으로 정렬하기 위한 함수 
     
-    if reverse is True:
-        sorted_idx = sorted(indexed_lst, key=get_key, reverse=True)  # 원소 높은순 .
-    else:
-        sorted_idx = sorted(indexed_lst, key=get_key, reverse=False)  # 낮은순  
+    
+    sorted_idx = sorted(indexed_lst, key=get_key, reverse=reverse)  # 원소 높은순 .
+ 
     
     top_n_idx = [idx for idx, val in sorted_idx[:n]] # top n index 추출
     return top_n_idx
@@ -61,12 +60,7 @@ def rank_jacc(data_path, label:float, top_n:int, reverse:str ='True'):
         
 
     # distance 높은 순으로 반환 
-    if reverse == 'True':
-        idx = top_n_idx(overlap_score, top_n, reverse=True)
-    
-    # 낮은 순 반환 
-    elif reverse == 'False':
-        idx = top_n_idx(overlap_score, top_n, reverse=False)
+    idx = top_n_idx(overlap_score, top_n, reverse=reverse)
     
     top_n_idx_of_df = filtered_df.iloc[idx].index.tolist() # 원본데이터의 idx를 반환 
     
