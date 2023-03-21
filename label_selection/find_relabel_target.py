@@ -233,7 +233,7 @@ if __name__ == '__main__':
                                     train_path = train_path,
                                     dev_path = dev_path,
                                     train_batch_size = train_batch_size,
-                                    num_folds = 2)
+                                    num_folds = 5)
 
     false_idx = find_re_target.extract_false()
     relabel_target = find_re_target.extract_uncertain(false_idx)
