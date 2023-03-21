@@ -36,6 +36,9 @@ remove_uncertain_label(model_list,sentence_pairs) # return list of labels:float
 
 ## calculate word_overlap by jaccard distance
 
+<img width="1268" alt="image" src="https://user-images.githubusercontent.com/100064247/226709875-7dcda05c-ebc9-457b-a952-42c2376065ed.png">
+
+
 ```python
 %run jacc.py
 ```
