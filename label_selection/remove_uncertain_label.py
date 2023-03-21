@@ -6,12 +6,9 @@ from datetime import datetime
 from tqdm.auto import tqdm
 from importlib import reload
 import torch
-from torch.utils.data import DataLoader
-from datasets import load_dataset
-from sentence_transformers import SentenceTransformer,  LoggingHandler, losses, models, util
-from sentence_transformers.readers import InputExample
 
-from cross_encoder.cross_encoder import CrossEncoder
+from sentence_transformers import SentenceTransformer,  LoggingHandler, losses, models, util
+from cross_encoder.CrossEncoder import CrossEncoder
 
 
 reload(logging)
@@ -26,16 +23,25 @@ logging.info("Run remove_uncertain_label.py")
 
 
 
-def remove_uncertain_label (model_list,sentence_pairs):
+def remove_uncertain_label (model_list:List[str], sentence_pairs: List[str]):
+    
+    """
+    Remove uncertain label from sentence pairs using a list of cross-encoder models.
+
+    model_list: A list of paths to saved cross-encoder models.
+    sentence_pairs: A list of sentence pairs to predict labels for.
+
+    """
+    
     
     labels = []
     
     for i,model_save_path in enumerate(model_list):
         
-        print(logging.info("Load model_{}".format(i)))
+        logging.info("Load model_{}".format(i))
         model = CrossEncoder(model_save_path)
         
-        print(logging.info("Predict_with_model_{}".format(i)))
+        logging.info("Predict_with_model_{}".format(i))
         scores = model.predict(sentence_pairs)
         
         globals()['label_{}'.format(i)] = np.round((scores*5).tolist(),1)
@@ -48,26 +54,20 @@ def remove_uncertain_label (model_list,sentence_pairs):
     removed_mean = []
 
     for i in range(len(sentence_pairs)):
-
-        label_each_pair=[]
-
-        for j in range(len(labels)):
-            label_each_pair.append(labels[j][i])
-
+        label_each_pair = [labels[j][i] for j in range(len(labels))]
         label_std.append(np.round( (np.std(label_each_pair)),2 ) )
-        label_mean.append(np.round(sum(label_each_pair)/len(label_each_pair),1))
+        label_mean.append(np.round(sum(label_each_pair)/len(label_each_pair),2))
 
 
         min = label_mean[i] - label_std[i]
         max = label_mean[i] + label_std[i]
-
-        for k in label_each_pair:
-            if (k < min) | (k > max):
-                label_each_pair.remove(k)
-
-        removed_mean.append(sum(label_each_pair) / len(label_each_pair))
         
-    return np.round(removed_mean,1)
+        
+        filtered_labels = [k for k in label_each_pair if min <= k <= max]
+
+        removed_mean.append(np.round( sum(filtered_labels) / len(filtered_labels) ,1))
+        
+    return removed_mean
 
 
 
