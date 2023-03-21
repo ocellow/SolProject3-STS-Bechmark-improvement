@@ -170,7 +170,7 @@ class CrossEncoder():
             
             self._eval_during_training(evaluator, output_path, save_best_model) # last val 
 
-    def predict(self, sentences:List[List[str]], # evaluator 만지고 다시보기 
+    def predict(self, sentences:List[List[str]], 
                 batch_size:int = 32,
                 num_workers:int=0,
                 convert_to_numpy: bool = True,
