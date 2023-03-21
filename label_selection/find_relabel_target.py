@@ -16,7 +16,7 @@ from tqdm.auto import tqdm
 from importlib import reload
 
 from cross_encoder.train_utils import *
-from cross_encoder.cross_encoder import CrossEncoder
+from cross_encoder.CrossEncoder import CrossEncoder
 from model_evaluation.model_evaluator import ModelEvaluator
  
 
