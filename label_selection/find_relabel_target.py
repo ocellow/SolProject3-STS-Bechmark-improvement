@@ -57,12 +57,8 @@ class FindRelabelTarget():
     # train 에서 2.0-3.5값만 추출한 데이터프레임 만들기 
     def filter_df_by_label_range(self):
         
-        # label_col: 라벨값이 저장된 열 이름 (문자열)
-        # label_range: 추출할 라벨값 범위 (튜플 형태로 최소값과 최대값을 지정)
         label_col = 'labels.label'
-        label_range = (2.0,3.5)
-
-        filtered_df = self.og_train[(self.og_train[label_col] >= label_range[0]) & (self.og_train[label_col] <= label_range[1])]
+        filtered_df = self.og_train[(self.og_train[label_col] >= 2.0) & (self.og_train[label_col] <= 3.5)]
         return filtered_df
  
     def get_data_by_fold(self, fold_num): ## fold로 나눠서 test 추출  
