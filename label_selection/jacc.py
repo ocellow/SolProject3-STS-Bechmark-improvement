@@ -3,6 +3,9 @@ use jaccard distance to make new devset
 for below 3.0 score, high distance
 above 3.0, low distance pairs are prioritized 
 prevent from model to predict based on wordoverlap 
+
+use Mecab for morpheme level tokenizing 
+$ pip install python-mecab-ko
 """
 
 import pandas as pd
