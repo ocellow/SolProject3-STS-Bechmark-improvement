@@ -7,7 +7,7 @@
 %run model_evaluator.py
 ```
 ```python
-#Evaluator by sts-test
+#Evaluate by sts-test
 test_evaluator = ModelEvaluator.from_input_examples(sts_test_examples)
 pearson_r , f1_score = test_evaluator(trained_model) 
 ```
