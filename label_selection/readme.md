@@ -2,11 +2,12 @@
 <br>
 
 ## find_relabel_target
+<img width="349" alt="image" src="https://user-images.githubusercontent.com/100064247/226592917-e73d5b79-0e28-4fd2-9a11-959b6052ac91.png">
 ```python
 ! git clone https://github.com/tommyEzreal/SolProject3-STS-Bechmark-improvement/
 %run SolProject3-STS-Bechmark-improvement/label_selection/find_relabel_target.py
 ```
-<img width="349" alt="image" src="https://user-images.githubusercontent.com/100064247/226592917-e73d5b79-0e28-4fd2-9a11-959b6052ac91.png">
+
 
 
 
