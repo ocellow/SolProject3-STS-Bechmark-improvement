@@ -18,7 +18,6 @@
 <img width="724" alt="image" src="https://user-images.githubusercontent.com/100064247/226709281-e907b209-a596-4422-9b6d-0d51022194bf.png">
 
 - 모델 성능 향상을 위한 self-training방식 적용 시 불확실성이 높은 pseudo-label을 선별 
-- 사용방법
 
 ```python
 %run remove_uncertain_label.py
