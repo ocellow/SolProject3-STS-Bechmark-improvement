@@ -21,7 +21,7 @@ logging.info("Run remove_uncertain_label.py")
 
 
 
-def remove_uncertain_label (model_list:List[str], sentence_pairs: List[str]):
+def remove_uncertain_label (model_list:List[str], sentence_pairs: List[List[str]]):
     
     """
     Remove uncertain label from sentence pairs using a list of cross-encoder models.
