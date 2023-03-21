@@ -5,7 +5,11 @@ above 3.0, low distance pairs are prioritized
 prevent from model to predict based on wordoverlap 
 
 use Mecab for morpheme level tokenizing 
-$ pip install python-mecab-ko
+
+!pip install konlpy
+!sudo apt-get install g++ openjdk-8-jdk 
+!sudo apt-get install curl
+!bash <(curl -s https://raw.githubusercontent.com/konlpy/konlpy/master/scripts/mecab.sh)
 """
 
 import pandas as pd
