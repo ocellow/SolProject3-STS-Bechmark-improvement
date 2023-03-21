@@ -5,6 +5,7 @@ from datetime import datetime
 from tqdm.auto import tqdm
 from importlib import reload
 import torch
+from typing import List
 
 from cross_encoder.CrossEncoder import CrossEncoder
 
