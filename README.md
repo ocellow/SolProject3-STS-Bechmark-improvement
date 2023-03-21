@@ -99,7 +99,7 @@
 ```python
 ! git clone https://github.com/tommyEzreal/SolProject3-STS-Bechmark-improvement
 %cd /SolProject3-STS-Bechmark-improvement/model_evaluation/
-%run model_evalutation.py
+%run evaluate_exp.py
 ```
 ```python
 # 학습완료된 model 불러오기 (cross-encoder)
