@@ -56,8 +56,8 @@ def create_input_examples(train,val):
 
 
 def train_ce(model_save_path,
-             train,
-             dev, 
+             train, # DataFrame
+             dev, # DataFrame
              num_epochs,
              train_batch_size,
              pretrained_model_name='klue/roberta-base',
