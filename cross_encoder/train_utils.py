@@ -91,3 +91,19 @@ def train_ce(model_save_path,
     )
 
     return cross_encoder
+
+if __name__ == '__main__':
+    model_save_path = '/content/sample_data/cross_encoder'
+    train = pd.read_csv('https://raw.githubusercontent.com/tommyEzreal/SolProject3-STS-Bechmark-improvement/main/data/KLUE_STS_train%20(2).csv')
+    train = train[['sentence1','sentence2','labels.label']]
+    dev = pd.read_csv('https://raw.githubusercontent.com/tommyEzreal/SolProject3-STS-Bechmark-improvement/main/data/KLUE_STS_val%20(2).csv')
+    dev = dev[['sentence1','sentence2','labels.label']]
+    num_epochs = 1
+    train_batch_size = 32
+    
+    trained_model = train_ce(model_save_path, train, dev, num_epochs, train_batch_size)
+    
+    
+    
+    
+    
