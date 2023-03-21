@@ -169,10 +169,13 @@ class FindRelabelTarget():
                         'monologg/koelectra-base-v3-discriminator']
 
         preds_all_model = [] # 
-        for pretrained_model_name in model_list: # 모델 별 루프 
+        for pretrained_model_name in model_list: # 모델 별 루프
+            logging.info(f'Load {pretrained_model_name}.. to extract_uncertain')
+            
             seeds = random.sample(range(100),num_seeds) #num_seed 인자로 받기 
-
-            for seed in seeds: # 시드별 루프 
+            for i, seed in enumerate(seeds): # 시드별 루프 
+                
+                logging.info(f'set_{i}th seed')
                 
                 # cuda memory error 방지  
                 gc.collect()
