@@ -124,10 +124,10 @@ class CrossEncoder():
         scheduler = SentenceTransformer._get_scheduler(optimizer, scheduler='WarmupLinear',
                                                             warmup_steps = warmup_steps, t_total=num_train_steps)
         
-        loss_fct = torch.nn.MSELoss() #loss_fct = torch.nn.BCEWithLogitsLoss()#2
-        
+        loss_fct = torch.nn.BCEWithLogitsLoss()  
+        #loss_fct = torch.nn.MSELoss() 
 
-        #skip_scheduler=False
+        
 
         #train loop
         
@@ -151,7 +151,6 @@ class CrossEncoder():
 
                 optimizer.zero_grad()
 
-                #if not skip_scheduler:
                 scheduler.step()
                 
                 training_steps +=1
@@ -201,8 +200,6 @@ class CrossEncoder():
         
         pred_scores = [score[0] for score in pred_scores]
 
-        # if convert_to_tensor:
-        #     pred_scores = torch.stack(pred_scores)
         if convert_to_numpy:
             pred_scores = np.asarray([score.cpu().detach().numpy() for score in pred_scores])
 
