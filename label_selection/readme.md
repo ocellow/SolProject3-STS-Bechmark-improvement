@@ -33,3 +33,9 @@ model_list = [ *model_save_path ] # List[str]
 remove_uncertain_label(model_list,sentence_pairs) # return list of labels:float
 
 ```
+
+## calculate word_overlap by jaccard distance
+
+```python
+%run jacc.py
+```
