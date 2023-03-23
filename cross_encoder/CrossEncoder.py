@@ -11,6 +11,7 @@ from torch.optim import Optimizer
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, AutoConfig
+import transformers
 from sentence_transformers import SentenceTransformer
 
 from model_evaluation.model_evaluator import ModelEvaluator
@@ -117,8 +118,7 @@ class CrossEncoder():
         optimizer = optimizer_class(optimizer_grouped_parameters, **optimizer_params)
         
         
-        scheduler = SentenceTransformer._get_scheduler(optimizer, scheduler='WarmupLinear',
-                                                            warmup_steps = warmup_steps, t_total=num_train_steps)
+        scheduler = transformers.get_linear_schedule_with_warmup(optimizer, num_warmup_steps=warmup_steps, num_training_steps=num_train_steps)
         
         loss_fct = torch.nn.BCEWithLogitsLoss()  
         #loss_fct = torch.nn.MSELoss() 
