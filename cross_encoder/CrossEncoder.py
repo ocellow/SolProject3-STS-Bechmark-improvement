@@ -168,8 +168,7 @@ class CrossEncoder():
     def predict(self, sentences:List[List[str]], 
                 batch_size:int = 32,
                 num_workers:int=0,
-                convert_to_numpy: bool = True,
-                convert_to_tensor:bool = False):
+                convert_to_numpy: bool = True):
         
         input_was_string=False
         if isinstance(sentences[0] , str):
@@ -217,11 +216,11 @@ class CrossEncoder():
         """
         if path is None:
             return
-
         
         self.model.save_pretrained(path)
         self.tokenizer.save_pretrained(path)
 
+        
     def save_pretrained(self, path):
         """
         Same function as save
