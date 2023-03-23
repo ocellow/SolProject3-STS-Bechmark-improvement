@@ -220,9 +220,4 @@ class CrossEncoder():
         self.model.save_pretrained(path)
         self.tokenizer.save_pretrained(path)
 
-        
-    def save_pretrained(self, path):
-        """
-        Same function as save
-        """
-        return self.save(path)
+   
