@@ -85,13 +85,12 @@ class FindRelabelTarget():
 
         return train_data, test_data
 
-    def extract_false(self, pretrained_model_name=None):
+    def extract_false(self, pretrained_model_name=None, seed=0):
     # fold num에 따라 데이터 선택 
         
         if pretrained_model_name is None:
             pretrained_model_name = "klue/roberta-base"
 
-        seed = 0
         # torch seed fix 
         torch.manual_seed(seed)
         torch.cuda.manual_seed(seed)
@@ -223,7 +222,7 @@ class FindRelabelTarget():
         return uncertain_dp_idx
 
 if __name__ == '__main__':
-    num_epochs = 1
+    num_epochs = 3
     train_batch_size = 64
     model_save_path = '/content/sample_data/cross_encoder'
     train_path = 'https://raw.githubusercontent.com/tommyEzreal/SolProject3-STS-Bechmark-improvement/main/data/KLUE_STS_train%20(2).csv'
