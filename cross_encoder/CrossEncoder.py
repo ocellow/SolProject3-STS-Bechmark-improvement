@@ -10,10 +10,13 @@ from torch import nn
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
-from transformers import AutoModelForSequenceClassification, AutoTokenizer, AutoConfig
+
 import transformers
+from transformers import AutoModelForSequenceClassification, AutoTokenizer, AutoConfig
 
 from model_evaluation.model_evaluator import ModelEvaluator
+
+
 
 class CrossEncoder():
     def __init__(self, model_name:str, 
