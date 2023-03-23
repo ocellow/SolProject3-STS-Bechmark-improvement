@@ -12,7 +12,6 @@ from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, AutoConfig
 import transformers
-from sentence_transformers import SentenceTransformer
 
 from model_evaluation.model_evaluator import ModelEvaluator
 
