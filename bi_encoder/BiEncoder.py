@@ -107,7 +107,7 @@ class BiEncoder(nn.Sequential):
 
       
     def fit(self,
-            train_objectives],
+            train_objectives,
             evaluator = None,
             epochs = 1,
             warmup_steps: int = 10000,
