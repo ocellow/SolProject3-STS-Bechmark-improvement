@@ -1,12 +1,13 @@
 import random
 import math
-from cross_encoder.train_utils import extract_val_from_train, create_input_examples
-
-from bi_encoder import PtTransformer, BiEncoder, CosineSimilarityLoss, Pooling
-from sentence_transformers import InputExample,LoggingHandler
 import logging
 from importlib import reload
 from tqdm.auto import tqdm 
+
+from cross_encoder.train_utils import extract_val_from_train, create_input_examples
+from bi_encoder import PtTransformer, BiEncoder, CosineSimilarityLoss, Pooling
+from sentence_transformers import InputExample,LoggingHandler
+from model_evaluation.model_evaluator import ModelEvaluator
 
 
 def train_be(model_save_path,
