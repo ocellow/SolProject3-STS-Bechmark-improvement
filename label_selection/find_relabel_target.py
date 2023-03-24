@@ -7,7 +7,7 @@ import torch
 import torch.backends.cudnn as cudnn 
 import random 
 from torch.utils.data import DataLoader
-from sentence_transformers import LoggingHandler, losses, models, util
+from sentence_transformers import LoggingHandler
 import gc
 import math
 import logging
