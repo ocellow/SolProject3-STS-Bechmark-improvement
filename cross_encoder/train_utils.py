@@ -6,11 +6,9 @@ import logging
 from importlib import reload
 from sentence_transformers import LoggingHandler
 from tqdm.auto import tqdm 
-# from cross_encoder.CrossEncoder import CrossEncoder
-# from model_evaluation.model_evaluator import ModelEvaluator
+from cross_encoder import CrossEncoder
+from model_evaluation import ModelEvaluator
 
-import cross_encoder
-import model_evaluation
 import math 
 
 
