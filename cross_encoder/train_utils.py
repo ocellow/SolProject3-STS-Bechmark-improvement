@@ -61,6 +61,7 @@ def train_ce(model_save_path,
              num_epochs,
              train_batch_size,
              pretrained_model_name='klue/roberta-base',
+             encoding = 'cross_encoding',
              verbose = True):
     # load pretrained model 
     cross_encoder = CrossEncoder(pretrained_model_name, num_labels=1)
@@ -75,7 +76,7 @@ def train_ce(model_save_path,
     train_dataloader = DataLoader(sts_train_examples,
                                     shuffle=True,
                                     batch_size = train_batch_size)
-    val_evaluator = ModelEvaluator.from_input_examples(sts_val_examples, verbose = verbose)
+    val_evaluator = ModelEvaluator.from_input_examples(sts_val_examples, encoding=encoding, verbose = verbose)
     
     warmup_steps = math.ceil(len(train_dataloader) * num_epochs / train_batch_size*0.1) # 10%of train
 
