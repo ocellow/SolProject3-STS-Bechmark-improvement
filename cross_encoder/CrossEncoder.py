@@ -5,7 +5,7 @@ sys.path.append('/content/SolProject3-STS-Bechmark-improvement')
 import numpy as np
 import logging
 import os
-from typing import Dict, Type, Callable, List
+from typing import Dict, List
 import transformers
 import torch
 from torch import nn
