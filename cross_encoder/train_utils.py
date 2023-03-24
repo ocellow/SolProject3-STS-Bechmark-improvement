@@ -32,7 +32,7 @@ def extract_val_from_train(train,dev):
 
     for i in label:
         try: # if sample size is bigger than 'number', skip sampling 
-            sample = train.loc[train['labels.label']==i].sample(n=val_ratio['number'][i], random_state = 0)
+            sample = train.loc[train['labels.label']==i].sample(n=val_ratio['number'][i])
         except:
             continue 
         val = pd.concat([val,sample])
