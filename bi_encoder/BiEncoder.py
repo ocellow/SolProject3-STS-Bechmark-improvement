@@ -98,8 +98,10 @@ class BiEncoder(nn.Sequential):
             if save_best_model:
                 self.save(output_path)
         
-    def evaluate(self, evaluator, output_path):
-
+    def evaluate(self, evaluator, output_path): 
+        """
+        outpath에 directory만들고 evaluator 반환 
+        """
         os.makedirs(output_path, exist_ok=True)
         return evaluator(self, output_path)
 
@@ -127,12 +129,12 @@ class BiEncoder(nn.Sequential):
 
     
             for dataloader in dataloaders:
-                dataloader.collate_fn = self.batch_collate
+                dataloader.collate_fn = self.batch_collate # dataloader batch clltfn 할당 
 
             # CosineSimilarityLoss(model=bi_encoder)
             loss_models = [loss for _, loss in train_objectives]
             for loss_model in loss_models:
-                loss_model.to(self.device)
+                loss_model.to(self.device) # for each model to device 
 
             self.best_score = -9999999 # for eval_during_training (score > best_score)
 
@@ -154,6 +156,7 @@ class BiEncoder(nn.Sequential):
 
                 optimizer = optimizer_class(optimizer_grouped_parameters, **optimizer_params)
                 
+                # scheduler
                 scheduler_obj = transformers.get_linear_schedule_with_warmup(optimizer, num_warmup_steps=warmup_steps, num_training_steps=num_train_steps)
                 
                 optimizers.append(optimizer)
