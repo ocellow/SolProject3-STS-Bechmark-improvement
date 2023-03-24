@@ -1,4 +1,6 @@
 # cross_encoder
+import sys
+sys.path.append('/content/SolProject3-STS-Bechmark-improvement')
 
 import numpy as np
 import logging
@@ -14,7 +16,7 @@ from tqdm.auto import tqdm
 import transformers
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, AutoConfig
 
-from .model_evaluation.model_evaluator import ModelEvaluator
+from model_evaluation.model_evaluator import ModelEvaluator
 
 
 
