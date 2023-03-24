@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/content/SolProject3-STS-Bechmark-improvement')
+
 import pandas as pd
 from torch.utils.data import DataLoader
 from sentence_transformers import InputExample
