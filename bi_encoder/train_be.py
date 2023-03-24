@@ -7,6 +7,9 @@ import logging
 from importlib import reload
 from tqdm.auto import tqdm 
 
+import torch
+from torch.utils.data import DataLoader
+
 from cross_encoder.train_utils import extract_val_from_train, create_input_examples
 from bi_encoder import PtTransformer, BiEncoder, CosineSimilarityLoss, Pooling
 from sentence_transformers import InputExample,LoggingHandler
