@@ -5,7 +5,7 @@ from typing import Union, Tuple, List, Iterable, Dict
 import os
 import json
 
-
+# mean pooling 
 class Pooling(nn.Module):
     def __init__(self,
                  word_embedding_dimension: int,
