@@ -36,7 +36,7 @@ class BiEncoder(nn.Sequential):
         입력순서를 유지하면서 
         """
         
-        super().__init__(modules) #modules 에 전달된 모듈들 nn.Sequential에 전달 - modules를 하나로 묶어서 SentenceTransformer에서 실행 
+        super().__init__(modules) #modules 에 전달된 모듈들 nn.Sequential에 전달 - modules를 하나로 묶어서 BiEncoder에서 실행 
 
 
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
