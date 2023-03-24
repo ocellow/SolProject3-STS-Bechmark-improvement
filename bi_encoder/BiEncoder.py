@@ -51,7 +51,7 @@ class BiEncoder(nn.Sequential):
     next(iter()) : 첫번째 key값에 해당하는 module을 반환 
     """
     
-    def tokenize(self, texts: Union[List[str], List[Dict], List[Tuple[str, str]]]):
+    def tokenize(self, texts):
         """
         Tokenizes the texts (from PtTransformer)
         """
@@ -107,21 +107,17 @@ class BiEncoder(nn.Sequential):
 
       
     def fit(self,
-            train_objectives: Iterable[Tuple[DataLoader, nn.Module]],
+            train_objectives],
             evaluator = None,
             epochs = 1,
             warmup_steps: int = 10000,
-            optimizer_class: Type[Optimizer] = torch.optim.AdamW,
-            optimizer_params : Dict[str, object]= {'lr': 2e-5},
+            optimizer_class= torch.optim.AdamW,
+            optimizer_params = {'lr': 2e-5},
             weight_decay: float = 0.01,
             evaluation_steps: int = 0,
             output_path: str = None,
             save_best_model: bool = True,
             max_grad_norm: float = 1,
-            show_progress_bar: bool = True,
-            checkpoint_path: str = None,
-            checkpoint_save_steps: int = 500,
-            checkpoint_save_total_limit: int = 0
             ):
 
 
@@ -135,7 +131,7 @@ class BiEncoder(nn.Sequential):
             for dataloader in dataloaders:
                 dataloader.collate_fn = self.batch_collate
 
-            # losses.CosineSimilarityLoss(model=bi_encoder)
+            # CosineSimilarityLoss(model=bi_encoder)
             loss_models = [loss for _, loss in train_objectives]
             for loss_model in loss_models:
                 loss_model.to(self.device)
@@ -222,7 +218,8 @@ class BiEncoder(nn.Sequential):
                 self._eval_during_training(evaluator, output_path, save_best_model -1)
 
 
-    def encode(self, sentences: Union[str, List[str]],
+    def encode(self, 
+               sentences,
                batch_size: int = 32,
                convert_to_numpy: bool = True,
                ):
