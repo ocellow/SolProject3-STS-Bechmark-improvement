@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/content/SolProject3-STS-Bechmark-improvement')
+
 import pandas as pd
 import numpy as np
 from tqdm.auto import tqdm
@@ -15,7 +18,7 @@ import tqdm
 from tqdm.auto import tqdm
 from importlib import reload
 
-from cross_encoder.train_utils import *
+from cross_encoder.train_utils import extract_val_from_train, create_input_examples, train_ce
 from cross_encoder.CrossEncoder import CrossEncoder
 from model_evaluation.model_evaluator import ModelEvaluator
  
