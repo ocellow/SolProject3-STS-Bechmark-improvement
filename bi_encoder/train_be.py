@@ -26,7 +26,6 @@ def train_be(model_save_path,
     pooling_mode_mean_tokens = True)
 
     bi_encoder = BiEncoder(modules = [embedding_model, pooler])
-    # bi_encoder = SentenceTransformer(modules = [embedding_model, pooler])
 
     logging.info('extract_val_from_train')
     _train, val = extract_val_from_train(train, dev) # extract val from train 
