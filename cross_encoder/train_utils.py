@@ -29,10 +29,10 @@ def extract_val_from_train(train,dev):
     val = pd.DataFrame()
     label = list(set(train['labels.label'].values))
     
-    random_state = random.sample(range(100),1)
+
     for i in label:
         try: # if sample size is bigger than 'number', skip sampling 
-            sample = train.loc[train['labels.label']==i].sample(n=val_ratio['number'][i], random_state = random_state)
+            sample = train.loc[train['labels.label']==i].sample(n=val_ratio['number'][i], random_state = 0)
         except:
             continue 
         val = pd.concat([val,sample])
