@@ -231,6 +231,7 @@ if __name__ == '__main__':
     find_re_target = FindRelabelTarget(model_save_path = model_save_path,
                                     train_path = train_path,
                                     dev_path = dev_path,
+                                    num_epochs = num_epochs
                                     train_batch_size = train_batch_size,
                                     num_folds = 10)
 
