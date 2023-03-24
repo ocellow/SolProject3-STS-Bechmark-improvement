@@ -16,6 +16,7 @@ def train_be(model_save_path,
              num_epochs,
              train_batch_size,
              pretrained_model_name='klue/roberta-base',
+             encoding = 'bi_encoding',
              verbose = True):
     # load pretrained model 
     embedding_model = PtTransformer(pretrained_model_name)
@@ -39,7 +40,7 @@ def train_be(model_save_path,
                                     batch_size = train_batch_size)
     # Evaluator by sts-validation
     logging.info("Creating bi-encoding evaluators")
-    val_evaluator = ModelEvaluator.from_input_examples(sts_val_examples,encoding='bi_encoding')
+    val_evaluator = ModelEvaluator.from_input_examples(sts_val_examples,encoding=encoding, verbose=verbose)
     
     train_loss = CosineSimilarityLoss(model=bi_encoder)
 
