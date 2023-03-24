@@ -61,7 +61,6 @@ def train_be(model_save_path,
         optimizer_params = {'lr':5e-5},
         warmup_steps=warmup_steps,
         output_path=model_save_path,
-        show_progress_bar = True
     )
 
     return bi_encoder
