@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/content/SolProject3-STS-Bechmark-improvement')
+
 import random
 import math
 import logging
