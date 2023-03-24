@@ -4,7 +4,7 @@ from sklearn.metrics.pairwise import paired_cosine_distances
 from typing import List
 import os
 import csv
-from sentence_transformers.readers import InputExample,LoggingHandler
+from sentence_transformers import InputExample,LoggingHandler
 
 
 from importlib import reload
