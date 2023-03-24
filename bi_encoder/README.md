@@ -25,7 +25,7 @@ train_be(model_save_path,
          num_epochs, 
          train_batch_size)
 ```
-##do manually
+## do manually
 ```python
 #get model
 embedding_model = PtTransformer(pretrained_model_name) #from huggingface
@@ -42,7 +42,7 @@ bi_encoder.fit(train_objectives = [(train_dataloader,train_loss)],
 
 ```
 
-##evaluation / testing 
+## evaluation / testing 
 ```python
 test_evaluator = ModelEvaluator.from_input_examples(test_examples, encoding='bi_encoding',verbose=True)
 test_evaluator(trained_bi_encoder)
