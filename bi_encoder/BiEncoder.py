@@ -20,8 +20,6 @@ from tqdm.autonotebook import trange
 from sentence_transformers.util import batch_to_device
 
 
-logger = logging.getLogger(__name__)
-
 class BiEncoder(nn.Sequential):
 
     # without forward method, using Transformer pretrained model 
