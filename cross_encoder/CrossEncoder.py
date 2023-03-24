@@ -14,7 +14,7 @@ from tqdm.auto import tqdm
 import transformers
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, AutoConfig
 
-from model_evaluation.model_evaluator import ModelEvaluator
+from cross_encoder.model_evaluation import ModelEvaluator
 
 
 
