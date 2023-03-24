@@ -120,23 +120,37 @@ model_evaluation(model_save_path ,
 - 3.0label기준으로 TRUE/FALSE
 
 ```python
-def confusion_matrix(test):
+# ModelEvaluator.py 
+    def conf_matrix(self,pred_scores):
+        
+        conf_mat = []
+        for score, pred in zip(self.scores, pred_scores):
+            score = score * 5.0
+            pred = pred * 5.0
 
-  TP = len(test[test['correctness'] == 'True_P'])
-  TN = len(test[test['correctness'] == 'True_N'])
-  FP = len(test[test['correctness'] == 'False_P'])
-  FN = len(test[test['correctness'] == 'False_N'])
-  print("TP:",TP,"TN:",TN,"FP:",FP,"FN",FN)
+            if (pred >= 3.0) & (score >= 3.0):
+                conf_mat.append('True_P')
+            elif (pred < 3.0) & (score < 3.0):
+                conf_mat.append('True_N')
+            elif (pred >= 3.0) & (score < 3.0):
+                conf_mat.append('False_P')
+            else:
+                conf_mat.append('False_N')
 
-  
-  if (TP + FP) & (TP+FN) ==0:
-    return("accuracy:",(TP+TN)/(TP+TN+FP+FN))
-  
-  else:
-    pc=TP/(TP+FP)
-    rc=TP/(TP+FN)
-    
-    return("accuracy:",(TP+TN)/(TP+TN+FP+FN),"precision:", TP/(TP+FP), "recall:", TP/(TP+FN),"f1 score:", 2*pc*rc/(pc+rc))
+        TP = conf_mat.count('True_P')
+        TN = conf_mat.count('True_N')
+        FP = conf_mat.count('False_P')
+        FN = conf_mat.count('False_N')
+        if self.verbose == True:
+            logging.info("True_P: {}\tTrue_N: {}\tFalse_P: {}\tFalse_N: {}".format(TP,TN,FP,FN))
+        pc = TP / (TP + FP)
+        rc = TP / (TP + FN)
+
+        f1 = 2 * pc * rc / (pc + rc)
+        if self.verbose == True:
+            logging.info("F1-score:\t {:.4f}".format(f1))
+        
+        return f1 
 ```
 
 #### <모델선정>   
