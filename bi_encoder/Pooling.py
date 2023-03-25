@@ -26,7 +26,7 @@ class Pooling(nn.Module):
         ## Pooling strategy
         output_vectors = []
 
-        if self.pooling_mode_mean_tokens or self.pooling_mode_mean_sqrt_len_tokens:
+        if self.pooling_mode_mean_tokens:
             input_mask_expanded = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
             sum_embeddings = torch.sum(token_embeddings * input_mask_expanded, 1)
 
