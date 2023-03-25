@@ -125,16 +125,13 @@ class BiEncoder(nn.Sequential):
             
 
             # trian_dataloader
-            dataloaders = [dataloader for dataloader, _ in train_objectives]
+            dataloader = train_objectives[0][0]
+            dataloader.collate_fn = self.batch_collate # dataloader batch clltfn 할당 
 
-    
-            for dataloader in dataloaders:
-                dataloader.collate_fn = self.batch_collate # dataloader batch clltfn 할당 
-
+            
             # CosineSimilarityLoss(model=bi_encoder)
-            loss_models = [loss for _, loss in train_objectives]
-            for loss_model in loss_models:
-                loss_model.to(self.device) # for each model to device 
+            loss_model = train_objectives[0][1]
+            loss_model.to(self.device)
 
             self.best_score = -9999999 # for eval_during_training (score > best_score)
 
@@ -143,67 +140,53 @@ class BiEncoder(nn.Sequential):
 
             
             # optimizer 
-            optimizers = []
-            schedulers = []
-            for loss_model in loss_models: 
-                param_optimizer = list(loss_model.named_parameters()) # get params from pretrained model 
 
-                no_decay = ['bias', 'LayerNorm.bias', 'LayerNorm.weight']
-                optimizer_grouped_parameters = [
-                    {'params': [p for n, p in param_optimizer if not any(nd in n for nd in no_decay)], 'weight_decay': weight_decay},# if True (not in no_decay list)
-                    {'params': [p for n, p in param_optimizer if any(nd in n for nd in no_decay)], 'weight_decay': 0.0} # if False (in no_decay)
-                ]
 
-                optimizer = optimizer_class(optimizer_grouped_parameters, **optimizer_params)
+            param_optimizer = list(loss_model.named_parameters()) # get params from pretrained model 
+
+            no_decay = ['bias', 'LayerNorm.bias', 'LayerNorm.weight']
+            optimizer_grouped_parameters = [
+                {'params': [p for n, p in param_optimizer if not any(nd in n for nd in no_decay)], 'weight_decay': weight_decay},# if True (not in no_decay list)
+                {'params': [p for n, p in param_optimizer if any(nd in n for nd in no_decay)], 'weight_decay': 0.0} # if False (in no_decay)
+            ]
+
+            optimizer = optimizer_class(optimizer_grouped_parameters, **optimizer_params)
+
+            # scheduler
+            scheduler = transformers.get_linear_schedule_with_warmup(optimizer, num_warmup_steps=warmup_steps, num_training_steps=num_train_steps)
                 
-                # scheduler
-                scheduler_obj = transformers.get_linear_schedule_with_warmup(optimizer, num_warmup_steps=warmup_steps, num_training_steps=num_train_steps)
-                
-                optimizers.append(optimizer)
-                schedulers.append(scheduler_obj)
+
 
 
             global_step = 0
-            data_iterators = [iter(dataloader) for dataloader in dataloaders]
-
-            num_train_objectives = len(train_objectives) #1
+            data_iterators = iter(dataloader)
 
             
+            #train loop
             for epoch in tqdm(range(epochs), desc="Epoch"):
                 training_steps = 0
 
-                for loss_model in loss_models: 
-                    loss_model.zero_grad()
-                    loss_model.train()
+
+                loss_model.zero_grad()
+                loss_model.train()
 
                 for _ in tqdm(range(steps_per_epoch), desc="Iteration", smoothing=0.05):
-                    for train_idx in range(num_train_objectives):
-                        loss_model = loss_models[train_idx]
-                        optimizer = optimizers[train_idx]
-                        scheduler = schedulers[train_idx]
-                        data_iterator = data_iterators[train_idx]
+                    data = next(data_iterator)
 
-                        try:
-                            data = next(data_iterator)
-                        except StopIteration:
-                            data_iterator = iter(dataloaders[train_idx])
-                            data_iterators[train_idx] = data_iterator
-                            data = next(data_iterator)
+                    features, labels = data
+                    labels = labels.to(self.device)
+                    features = list(map(lambda batch: batch_to_device(batch, self.device), features)) 
 
-                        features, labels = data
-                        labels = labels.to(self.device)
-                        features = list(map(lambda batch: batch_to_device(batch, self.device), features)) 
+                    loss = loss_model(features, labels) #loss_model = CossineSimilarityLoss(nn.Module)
+                    loss.backward()
 
-                        loss = loss_model(features, labels)
-                        loss.backward()
-                        
-                        torch.nn.utils.clip_grad_norm_(loss_model.parameters(), max_grad_norm)
-                        
-                        optimizer.step()
-                        optimizer.zero_grad()
+                    torch.nn.utils.clip_grad_norm_(loss_model.parameters(), max_grad_norm)
 
-                        
-                        scheduler.step()
+                    optimizer.step()
+                    optimizer.zero_grad()
+
+
+                    scheduler.step()
 
                     training_steps += 1
                     global_step += 1
@@ -211,9 +194,9 @@ class BiEncoder(nn.Sequential):
                     if evaluation_steps > 0 and training_steps % evaluation_steps == 0:
                         self._eval_during_training(evaluator, output_path, save_best_model)
 
-                        for loss_model in loss_models:
-                            loss_model.zero_grad()
-                            loss_model.train()
+
+                        loss_model.zero_grad()
+                        loss_model.train()
 
 
                 self._eval_during_training(evaluator, output_path, save_best_model -1)
