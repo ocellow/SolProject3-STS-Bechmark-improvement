@@ -142,10 +142,10 @@ class BiEncoder(nn.Sequential):
             num_train_steps = int(steps_per_epoch * epochs)
 
             
-            # optimizer for each model 
+            # optimizer 
             optimizers = []
             schedulers = []
-            for loss_model in loss_models: # two model for bi-encoding 
+            for loss_model in loss_models: 
                 param_optimizer = list(loss_model.named_parameters()) # get params from pretrained model 
 
                 no_decay = ['bias', 'LayerNorm.bias', 'LayerNorm.weight']
@@ -166,13 +166,13 @@ class BiEncoder(nn.Sequential):
             global_step = 0
             data_iterators = [iter(dataloader) for dataloader in dataloaders]
 
-            num_train_objectives = len(train_objectives) # 2 model
+            num_train_objectives = len(train_objectives) #1
 
             
             for epoch in tqdm(range(epochs), desc="Epoch"):
                 training_steps = 0
 
-                for loss_model in loss_models: # for each model zeor_grad / train()
+                for loss_model in loss_models: 
                     loss_model.zero_grad()
                     loss_model.train()
 
@@ -192,7 +192,7 @@ class BiEncoder(nn.Sequential):
 
                         features, labels = data
                         labels = labels.to(self.device)
-                        features = list(map(lambda batch: batch_to_device(batch, self.device), features)) ##
+                        features = list(map(lambda batch: batch_to_device(batch, self.device), features)) 
 
                         loss = loss_model(features, labels)
                         loss.backward()
