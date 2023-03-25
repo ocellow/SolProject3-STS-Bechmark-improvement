@@ -135,7 +135,7 @@ class BiEncoder(nn.Sequential):
 
             self.best_score = -9999999 # for eval_during_training (score > best_score)
 
-            steps_per_epoch = min([len(dataloader) for dataloader in dataloaders])
+            steps_per_epoch = len(dataloader)
             num_train_steps = int(steps_per_epoch * epochs)
 
             
@@ -215,27 +215,30 @@ class BiEncoder(nn.Sequential):
 
         
         length_sorted_idx = np.argsort([-sum([len(s) for s in sen]) for sen in sentences]) 
-        sentences_sorted = [sentences[idx] for idx in length_sorted_idx]
+        sentences_sorted = [sentences[idx] for idx in length_sorted_idx] # sort by length
+        """
+        np.argsort([[len_of_sent1], [len_of_sent2],... ]) , sort by length of sent , return idx
+        """
 
 
         all_embeddings = []
         for start_index in trange(0, len(sentences), batch_size):
-            sentences_batch = sentences_sorted[start_index:start_index+batch_size]
+            sentences_batch = sentences_sorted[start_index:start_index+batch_size] # return sentences as size of batch/ len(sentences_batch) = batch_size
             features = self.tokenize(sentences_batch)
-            features = batch_to_device(features, device)
+            features = batch_to_device(features, device) # to device each batch tkns
 
             with torch.no_grad():
                 out_features = self.forward(features)
 
-                embeddings = out_features['sentence_embedding']
+                embeddings = out_features['sentence_embedding'] #sentence embedding from forward to model 
                 embeddings = embeddings.detach()
 
                 if convert_to_numpy:
                     embeddings = embeddings.cpu()
 
-                all_embeddings.extend(embeddings)
+                all_embeddings.extend(embeddings) # add elements to list allembeddings 
 
-        all_embeddings = [all_embeddings[idx] for idx in np.argsort(length_sorted_idx)]
+        all_embeddings = [all_embeddings[idx] for idx in np.argsort(length_sorted_idx)] # go before length_sorted of sentences
         
         if convert_to_numpy:
             all_embeddings = np.asarray([emb.numpy() for emb in all_embeddings])
