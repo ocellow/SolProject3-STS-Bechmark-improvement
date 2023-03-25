@@ -56,15 +56,15 @@ class BiEncoder(nn.Sequential):
         return self._first_module().tokenize(texts) # 'input_ids', 'token_type_ids', 'attention_mask'
 
 
-    def batch_collate(self, batch):
- 
+    def batch_collate(self, batch): #batch = list of tuples: [(tokens, label), ...]
+        
         num_texts = len(batch[0].texts)
-        texts = [[] for _ in range(num_texts)]
+        texts = [[] for _ in range(num_texts)] # text length만큼 list 
         labels = []
 
         for example in batch:
-            for idx, text in enumerate(example.texts):
-                texts[idx].append(text)
+            for idx, text in enumerate(example.texts): 
+                texts[idx].append(text) 
 
             labels.append(example.label)
 
