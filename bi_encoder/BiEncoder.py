@@ -74,17 +74,6 @@ class BiEncoder(nn.Sequential):
         
         for idx in range(num_texts):
             tokenized = self.tokenize(texts[idx])
-            
-            """
-            self.tokenize(texts[idx]) : each sequence of a sentence's 'input_ids', 'token_type_ids','attention_mask'
-            
-            for example: 
-            idx:1 , tokenized = {'input_ids': tensor([[   0, 1826,    2]]),
-                                 'token_type_ids': tensor([[0, 0, 0]]),
-                                 'attention_mask': tensor([[1, 1, 1]])}
-            """
-
-
             sentence_features.append(tokenized)
 
         return sentence_features, labels
