@@ -2,6 +2,10 @@ import torch
 import torch.nn as nn 
 
 
+"""
+codes from UKPlab/sentence-transformers/https://github.com/UKPLab/sentence-transformers/blob/master/sentence_transformers/losses/CosineSimilarityLoss.py
+"""
+
 class CosineSimilarityLoss(nn.Module):
     def __init__(self, model):
         super().__init__()
