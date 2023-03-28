@@ -20,6 +20,13 @@ from tqdm.autonotebook import trange
 from sentence_transformers.util import batch_to_device
 
 
+"""
+codes are modified from 
+UKPlab/sentence-transformers Code(https://github.com/UKPLab/sentence-transformers/blob/master/sentence_transformers/SentenceTransformer.py) 
+"""
+
+
+
 class BiEncoder(nn.Sequential):
 
     # without forward method, using Transformer pretrained model 
