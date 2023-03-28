@@ -18,7 +18,10 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer, Auto
 
 from model_evaluation.model_evaluator import ModelEvaluator
 
-
+"""
+codes are modified from 
+UKPlab/sentence-transformers Code(https://github.com/UKPLab/sentence-transformers/blob/master/sentence_transformers/cross_encoder/CrossEncoder.py) 
+"""
 
 class CrossEncoder():
     def __init__(self, model_name:str, 
