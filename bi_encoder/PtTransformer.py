@@ -9,6 +9,13 @@ import json
 from typing import List, Dict
 import os
 
+"""
+codes are modified from 
+UKPlab/sentence-transformers Code(https://github.com/UKPLab/sentence-transformers/blob/master/sentence_transformers/models/Transformer.py) 
+"""
+
+
+
 # pretrained_transformer
 
 class PtTransformer(nn.Module):
