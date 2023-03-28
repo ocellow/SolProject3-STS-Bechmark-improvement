@@ -5,6 +5,13 @@ from typing import List, Dict
 import os
 import json
 
+
+"""
+codes are modified from 
+UKPlab/sentence-transformers Code(https://github.com/UKPLab/sentence-transformers/blob/master/sentence_transformers/models/Pooling.py) 
+"""
+
+
 # mean pooling 
 class Pooling(nn.Module):
     def __init__(self,
